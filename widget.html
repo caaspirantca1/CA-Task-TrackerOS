@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>CA Nepal Pro — Widget</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050505;--s1:#0f0f0f;--s2:#161616;--s3:#1e1e1e;
+  --border:#2a2a2a;--text:#f5f0e8;--text2:#b0a99e;--text3:#706b65;
+  --accent:#c9a84c;--accent-rgb:201,168,76;
+  --success:#22c55e;--warning:#f59e0b;--error:#ef4444;--info:#3b82f6;
+  --font-display:'Cormorant Garamond',serif;
+  --font-body:'DM Sans',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --radius:12px;--radius2:16px;
+}
+.light{
+  --bg:#f8f6f1;--s1:#ffffff;--s2:#f5f2ec;--s3:#ebe7df;
+  --border:#d5d0c8;--text:#1a1815;--text2:#5a5550;--text3:#8a8580;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);
+  min-height:100vh;min-height:100dvh;padding:1rem;
+  padding-top:max(1rem,env(safe-area-inset-top));
+  padding-bottom:max(1rem,env(safe-area-inset-bottom));
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--font-display);font-weight:500}
+
+.widget{max-width:480px;margin:0 auto}
+.w-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.w-brand{display:flex;align-items:center;gap:.6rem}
+.w-logo{width:32px;height:32px;border:1.5px solid var(--accent);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:.7rem;font-weight:600;color:var(--accent)}
+.w-title{font-family:var(--font-display);font-size:1rem;color:var(--text);letter-spacing:.03em}
+.w-mode{font-size:.55rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text3);
+  padding:.2rem .5rem;border:1px solid var(--border);border-radius:6px}
+.w-greeting{font-size:.85rem;color:var(--text2);margin-bottom:1.25rem}
+.w-greeting strong{color:var(--text);font-weight:600}
+
+.w-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.25rem}
+.w-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1rem;transition:.3s ease}
+.w-card:hover{border-color:rgba(var(--accent-rgb),.3)}
+.w-card .wc-icon{font-size:1.1rem;margin-bottom:.5rem}
+.w-card .wc-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:.3rem}
+.w-card .wc-value{font-family:var(--font-mono);font-size:1.35rem;font-weight:600;color:var(--text)}
+.w-card .wc-sub{font-size:.6rem;color:var(--text3);margin-top:.15rem}
+
+.w-section{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius2);
+  padding:1rem;margin-bottom:1rem}
+.w-section-title{font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text3);
+  font-weight:600;margin-bottom:.75rem;display:flex;align-items:center;justify-content:space-between}
+.w-section-title a{color:var(--accent);text-decoration:none;font-size:.6rem;text-transform:none;letter-spacing:0}
+
+.w-task{display:flex;align-items:center;gap:.6rem;padding:.5rem 0;border-bottom:1px solid var(--border)}
+.w-task:last-child{border-bottom:none}
+.w-task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-h{background:var(--error)}.dot-m{background:var(--warning)}.dot-l{background:var(--success)}
+.w-task-title{flex:1;font-size:.75rem;color:var(--text)}
+.w-task-title.done{text-decoration:line-through;color:var(--text3)}
+.w-task-due{font-size:.6rem;color:var(--text3);font-family:var(--font-mono)}
+.w-task-ck{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;flex-shrink:0;font-size:.6rem}
+.w-task-ck:hover{border-color:var(--accent)}
+.w-task-ck.done{border-color:var(--success);background:var(--success);color:#fff}
+
+.w-eng{display:flex;align-items:center;gap:.6rem;padding:.5rem 0;border-bottom:1px solid var(--border);cursor:pointer;transition:.2s}
+.w-eng:last-child{border-bottom:none}
+.w-eng:hover{background:var(--s2);margin:0 -.5rem;padding-left:.5rem;padding-right:.5rem;border-radius:8px}
+.w-eng-avatar{width:30px;height:30px;border-radius:8px;background:rgba(var(--accent-rgb),.12);
+  color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.7rem;flex-shrink:0}
+.w-eng-info{flex:1;min-width:0}
+.w-eng-name{font-size:.75rem;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.w-eng-meta{font-size:.6rem;color:var(--text3);margin-top:.1rem}
+.w-badge{font-size:.5rem;padding:.12rem .4rem;border-radius:10px;font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+.wb-s{background:rgba(34,197,94,.12);color:var(--success)}
+.wb-w{background:rgba(245,158,11,.12);color:var(--warning)}
+.wb-i{background:rgba(59,130,246,.12);color:var(--info)}
+
+.w-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1rem}
+.w-qa{display:flex;flex-direction:column;align-items:center;gap:.35rem;padding:.6rem .25rem;
+  background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);
+  cursor:pointer;transition:.2s;font-size:.55rem;color:var(--text3);text-align:center}
+.w-qa:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.w-qa .wqi{font-size:1.1rem}
+
+.w-open{display:block;width:100%;padding:.7rem;background:var(--accent);color:var(--bg);
+  border:none;border-radius:var(--radius);font-family:var(--font-body);font-size:.8rem;
+  font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:.2s;text-align:center;text-decoration:none}
+.w-open:hover{box-shadow:0 4px 16px rgba(var(--accent-rgb),.3);transform:translateY(-1px)}
+
+.w-empty{text-align:center;padding:1.5rem .5rem;color:var(--text3);font-size:.75rem}
+.w-empty .we-icon{font-size:1.5rem;margin-bottom:.5rem;opacity:.4}
+
+.w-footer{text-align:center;margin-top:1rem;font-size:.55rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase}
+
+@media(min-width:768px){
+  body{padding:2rem}
+  .w-grid{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="widget" id="widget">
+  <div class="w-header">
+    <div class="w-brand">
+      <div class="w-logo">CA</div>
+      <div class="w-title">CA Nepal Pro</div>
+    </div>
+    <div class="w-mode" id="w-mode">Loading...</div>
+  </div>
+
+  <div class="w-greeting" id="w-greeting">Loading...</div>
+
+  <div class="w-grid" id="w-kpis"></div>
+
+  <div class="w-quick">
+    <a class="w-qa" href="index.html"><span class="wqi">◈</span>Dashboard</a>
+    <a class="w-qa" href="index.html#engagements"><span class="wqi">⬡</span>Engage</a>
+    <a class="w-qa" href="index.html#finance"><span class="wqi">◆</span>Finance</a>
+    <a class="w-qa" href="index.html#tasks"><span class="wqi">☐</span>Tasks</a>
+  </div>
+
+  <div class="w-section">
+    <div class="w-section-title">
+      <span>Upcoming Tasks</span>
+      <a href="index.html#tasks">View All</a>
+    </div>
+    <div id="w-tasks"></div>
+  </div>
+
+  <div class="w-section">
+    <div class="w-section-title">
+      <span>Recent Engagements</span>
+      <a href="index.html#engagements">View All</a>
+    </div>
+    <div id="w-engs"></div>
+  </div>
+
+  <a class="w-open" href="index.html">Open Full App</a>
+
+  <div class="w-footer">CA Nepal Pro — Professional Ecosystem</div>
+</div>
+
+<script>
+(function(){
+  const load=(k,d)=>{try{const v=localStorage.getItem('cn_'+k);return v?JSON.parse(v):d}catch(e){return d}};
+  const mode=load('mode','aspirant');
+  const theme=load('theme','dark');
+  const accent=load('accent','');
+  const profile=load('profile',{name:'Professional'});
+  const engagements=load('engagements',[]);
+  const clients=load('clients',[]);
+  const transactions=load('transactions',[]);
+  const tasks=load('tasks',[]);
+
+  // Apply theme
+  if(theme==='light')document.body.classList.add('light');
+  if(accent){
+    const colors={blue:['#3b82f6','59,130,246'],emerald:['#10b981','16,185,129'],crimson:['#ef4444','239,68,68'],purple:['#a855f7','168,85,247'],graphite:['#6b7280','107,114,128']};
+    if(colors[accent]){document.documentElement.style.setProperty('--accent',colors[accent][0]);document.documentElement.style.setProperty('--accent-rgb',colors[accent][1]);}
+  }
+
+  // Mode
+  document.getElementById('w-mode').textContent=mode==='aspirant'?'CA Aspirant':'Qualified CA';
+
+  // Greeting
+  const now=new Date(),h=now.getHours();
+  const greet=h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening';
+  const name=(profile.name||'Professional').split(' ')[0];
+  document.getElementById('w-greeting').innerHTML=`${greet}, <strong>${name}</strong><br><span style="font-size:.7rem;color:var(--text3)">${now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</span>`;
+
+  // KPIs
+  const totalEng=engagements.length;
+  const completed=engagements.filter(e=>e.status==='completed').length;
+  const totalClients=clients.length;
+  const income=transactions.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const pending=tasks.filter(t=>t.status!=='completed').length;
+  const fmtK=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n;
+  const fmtN=n=>'NPR '+Number(n).toLocaleString('en-IN');
+
+  const isA=mode==='aspirant';
+  const kpis=isA?[
+    {icon:'⬡',label:'Engagements',value:totalEng,sub:completed+' done'},
+    {icon:'◈',label:'Allowance',value:fmtK(income),sub:'Total received'},
+    {icon:'◉',label:'Clients',value:totalClients,sub:'Active'},
+    {icon:'☐',label:'Tasks',value:pending,sub:'Pending'}
+  ]:[
+    {icon:'◉',label:'Clients',value:totalClients,sub:'Active'},
+    {icon:'⬡',label:'Engagements',value:totalEng,sub:completed+' done'},
+    {icon:'◈',label:'Revenue',value:fmtK(income),sub:'Total income'},
+    {icon:'☐',label:'Tasks',value:pending,sub:'Pending'}
+  ];
+
+  document.getElementById('w-kpis').innerHTML=kpis.map(k=>`
+    <div class="w-card">
+      <div class="wc-icon">${k.icon}</div>
+      <div class="wc-label">${k.label}</div>
+      <div class="wc-value">${k.value}</div>
+      <div class="wc-sub">${k.sub}</div>
+    </div>`).join('');
+
+  // Tasks
+  const upcoming=tasks.filter(t=>t.status!=='completed').slice(0,5);
+  const togTask=id=>{
+    const t=tasks.find(x=>x.id===id);
+    if(t){t.status=t.status==='completed'?'pending':'completed';
+      localStorage.setItem('cn_tasks',JSON.stringify(tasks));renderTasks();}
+  };
+  function renderTasks(){
+    const pending=tasks.filter(t=>t.status!=='completed').slice(0,5);
+    document.getElementById('w-tasks').innerHTML=pending.length?pending.map(t=>`
+      <div class="w-task">
+        <div class="w-task-ck" onclick="window._togTask('${t.id}')">${t.status==='completed'?'✓':''}</div>
+        <div class="w-task-dot dot-${t.priority[0]}"></div>
+        <div class="w-task-title">${t.title}</div>
+        <div class="w-task-due">${t.dueDate?new Date(t.dueDate).toLocaleDateString('en-US',{month:'short',day:'numeric'}):''}</div>
+      </div>`).join(''):'<div class="w-empty"><div class="we-icon">✓</div>All tasks completed!</div>';
+  }
+  window._togTask=togTask;
+  renderTasks();
+
+  // Engagements
+  const recent=engagements.slice(0,4);
+  document.getElementById('w-engs').innerHTML=recent.length?recent.map(e=>`
+    <a class="w-eng" href="index.html#engagements">
+      <div class="w-eng-avatar">${e.clientName[0]}</div>
+      <div class="w-eng-info">
+        <div class="w-eng-name">${e.clientName}</div>
+        <div class="w-eng-meta">${e.natureOfWork} · ${e.district||e.clientLocation||''}</div>
+      </div>
+      <span class="w-badge ${e.status==='completed'?'wb-s':e.status==='in-progress'?'wb-w':'wb-i'}">${e.status}</span>
+    </a>`).join(''):'<div class="w-empty"><div class="we-icon">⬡</div>No engagements yet</div>';
+
+})();
+</script>
+</body>
+</html>
